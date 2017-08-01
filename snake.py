@@ -8,7 +8,8 @@ turtle.setup(SIZE_X, SIZE_Y)
 turtle.penup()
 
 SQUARE_SIZE = 20
-START_LENGTH =2
+START_LENGTH =9
+
 
 pos_list =[]
 stamp_list = []
@@ -38,26 +39,31 @@ LEFT= 1
 DOWN = 2
 RIGHT = 3
 ###################################################
+
+
+
+
+
 direction = UP
+UP_EDGE = 250
+DOWN_EDGE = -250
+RIGHT_EDGE = 400
+LEFT_EDGE = -400
 def up():
     global direction
     direction=UP
-    move_snake()
     print("You pressed the up key!")
 def left():
     global direction
     direction=LEFT
-    move_snake()
     print("You pressed the left key!")
 def down():
     global direction
     direction=DOWN
-    move_snake()
     print("You pressed the down key!")
 def right():
     global direction
     direction=RIGHT
-    move_snake()
     print("You pressed the right key!")
 ##########################################################
 
@@ -84,5 +90,47 @@ def move_snake():
     elif direction==DOWN:
         snake.goto(x_pos, y_pos- SQUARE_SIZE)
         print("You moved down!")
+
+    my_pos=snake.pos()
+    pos_list.append(my_pos)
+    new_stamp = snake.stamp()
+    #
+    stamp_list.append(new_stamp)
+    #
+    old_stamp = stamp_list.pop(0)
+    snake.clearstamp(old_stamp)
+    pos_list.pop(0)
+    new_pos = snake.pos()
+    new_x_pos = new_pos[0]
+    new_y_pos = new_pos[1]
+    if new_x_pos >= RIGHT_EDGE:
+        print("You hit the right edge!GAME OVER!HAHAHA")
+        quit()
+    if new_x_pos <= LEFT_EDGE:
+        print("You hit the left edge!GAME OVER!HAHAHA")
+        quit()
+    if new_y_pos <= DOWN_EDGE:
+        print("You hit the down edge!GAME OVER!HAHAHA")
+        quit()
+    if new_y_pos >= UP_EDGE:
+        print("You hit the up edge!GAME OVER!HAHAHA")
+        quit()
+
+    TIME_STEP=100
+    turtle.ontimer(move_snake,TIME_STEP)
+
+move_snake()
 #######################################################################
         
+#turtle.register_shape("trash.gif")
+
+food = turtle.clone()
+food.shape('turtle')
+food_pos = [(100, 100), (-100, 100), (-100,-100), (100, -100)]
+food_stamps= []
+
+for this_food in food_pos:
+    food.goto(this_food)
+    s2=food.stamp()
+    food_stamps.append(s2)
+
