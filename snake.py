@@ -1,15 +1,34 @@
+
 import turtle
 import random
-turtle.tracer
+turtle.tracer(0,1)
+turtle.hideturtle()
+border = turtle.clone()
+RIGHT_BORDER = 300
+LEFT_BORDER = -1 * RIGHT_BORDER
+UP_BORDER = 400
+DOWN_BORDER = -1 * UP_BORDER
+
+border.penup()
+border.goto(LEFT_BORDER, DOWN_BORDER)
+border.pendown()
+border.goto(RIGHT_BORDER, DOWN_BORDER)
+border.goto(RIGHT_BORDER, UP_BORDER)
+border.goto(LEFT_BORDER, UP_BORDER)
+border.goto(LEFT_BORDER, DOWN_BORDER)
+border.penup()
 SIZE_X=800
 SIZE_Y=600
 turtle.setup(SIZE_X, SIZE_Y)
-
+#drawing=turtle.clone()
+#drawing.hideturtle()
+#drawing.penup(SIZE_X+100, SIZE_Y+100)
 turtle.penup()
 
 SQUARE_SIZE = 20
-START_LENGTH =49
+START_LENGTH =2
 TIME_STEP=1
+count = 0
 
 pos_list =[]
 stamp_list = []
@@ -52,20 +71,24 @@ RIGHT_EDGE = 1000
 LEFT_EDGE = -1000
 def up():
     global direction
-    direction=UP
-    print("You pressed the up key!")
+    if direction != DOWN:
+        direction=UP
+        print("You pressed the up key!")
 def left():
     global direction
-    direction=LEFT
-    print("You pressed the left key!")
+    if direction !=RIGHT:
+        direction=LEFT
+        print("You pressed the left key!")
 def down():
     global direction
-    direction=DOWN
-    print("You pressed the down key!")
+    if direction !=UP:
+        direction=DOWN
+        print("You pressed the down key!")
 def right():
     global direction
-    direction=RIGHT
-    print("You pressed the right key!")
+    if direction !=LEFT:
+        direction=RIGHT
+        print("You pressed the right key!")
 ##########################################################
 
 turtle.onkeypress(up, UP_ARROW)
@@ -81,10 +104,18 @@ def make_food():
     max_x=int(SIZE_Y/2/SQUARE_SIZE)+1
     food_x = random.randint(min_x,max_x)*SQUARE_SIZE
     food_y = random.randint(min_x,max_x)*SQUARE_SIZE
-    food.goto(food_x, food_y)
-    new_food=food.stamp()
-    food_pos.append((food_x, food_y))
-    food_stamps.append(new_food)
+    this_food = (food_x , food_y )
+    if this_food in pos_list:
+        make_food()
+    else:
+
+        food.goto(food_x, food_y)
+
+        new_food=food.stamp()
+        food_pos.append((food_x, food_y))
+        food_stamps.append(new_food)
+score=turtle.clone()
+
 def move_snake():
     my_pos = snake.pos()
     x_pos = my_pos[0]
@@ -111,6 +142,10 @@ def move_snake():
     #
     global food_stamps, food_pos
     if snake.pos() in food_pos:
+        global count
+        count+=1
+        score.clear()
+        score.write("score: "+str(count), font=("Arial", 18, "normal"))
         food_ind=food_pos.index(snake.pos())
         food.clearstamp(food_stamps[food_ind])
         food_pos.pop(food_ind)
@@ -137,9 +172,11 @@ def move_snake():
         print("You hit the up edge!GAME OVER!HAHAHA")
         quit()
 
-    turtle.ontimer(move_snake,TIME_STEP)
+    
     if snake.pos() in pos_list[0:-1]:
         quit()
+
+    turtle.ontimer(move_snake,TIME_STEP)
 move_snake()
 #######################################################################
         
@@ -154,6 +191,6 @@ for this_food in food_pos:
     food.goto(this_food)
     s2=food.stamp()
     food_stamps.append(s2)
-food.color('yellow')
-from turtle import *
-bgcolor('grey')
+food.color('BLUE')
+
+turtle.bgcolor('YELLOW')
