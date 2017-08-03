@@ -2,16 +2,14 @@ import turtle
 import random
 turtle.tracer
 SIZE_X=800
-SIZE_Y=500
+SIZE_Y=600
 turtle.setup(SIZE_X, SIZE_Y)
 
 turtle.penup()
 
 SQUARE_SIZE = 20
-START_LENGTH =16
-
-TIME_STEP=100
-
+START_LENGTH =49
+TIME_STEP=1
 
 pos_list =[]
 stamp_list = []
@@ -19,6 +17,7 @@ food_pos = []
 food_stamps = []
 snake = turtle.clone()
 snake.shape("square")
+snake.color("pink")
 turtle.hideturtle()
 for i in range(START_LENGTH):
     x_pos=snake.pos()[0]
@@ -47,10 +46,10 @@ RIGHT = 3
 
 
 direction = UP
-UP_EDGE = 250
-DOWN_EDGE = -250
-RIGHT_EDGE = 400
-LEFT_EDGE = -400
+UP_EDGE = 500
+DOWN_EDGE = -500
+RIGHT_EDGE = 1000
+LEFT_EDGE = -1000
 def up():
     global direction
     direction=UP
@@ -118,10 +117,10 @@ def move_snake():
         food_stamps.pop(food_ind)
         print('You have eaten the food')
         make_food()
-        
-    old_stamp = stamp_list.pop(0)
-    snake.clearstamp(old_stamp)
-    pos_list.pop(0)
+    else:
+        old_stamp = stamp_list.pop(0)
+        snake.clearstamp(old_stamp)
+        pos_list.pop(0)
     new_pos = snake.pos()
     new_x_pos = new_pos[0]
     new_y_pos = new_pos[1]
@@ -155,4 +154,6 @@ for this_food in food_pos:
     food.goto(this_food)
     s2=food.stamp()
     food_stamps.append(s2)
-
+food.color('yellow')
+from turtle import *
+bgcolor('grey')
